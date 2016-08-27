@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<script type = "text/javascript" src = "Grid.js"></script>
+	<script type = "text/javascript" src = "Ship.js"></script>
+	<script type = "text/javascript" src = "player.js"></script>
+	<script type = "text/javascript" src = "Game.js"></script>
+	<style>
+	body{
+	background-color: #1a1a1a;
+	}
+	#counters {
+		display: inline-block;
+		width: 340px;
+		height: 40px;
+		font-size: 1.3em;
+		color: #575757;
+	}
+	#counters #countShips{
+		float: left;
+	}
+	#counters #countShips{
+		float: right;
+	}
+		.cell {
+			float: left;
+			width: 30px;
+			height: 30px;
+			border: 2px solid #575757;
+			border-radius: 5px;
+		}
+		
+		#grid {
+		width: 340px;
+		height: 390px;
+			margin: 100px 300px; 
+			display: inline-block;
+			
+		}
+	</style>
+</head>
+<body>
+	
+	
+	<div id = "grid">
+	<div id = "counters">
+		<p id = "countShips">Ships left: 3</p>
+		<p id = "countShots">Shots left: 20</p>
+	</div>
+	</div>
+	
+	<script>
+	var countShips = document.getElementById('countShips');
+	var countShots = document.getElementById('countShots');
+	
+	var gridHtml = document.getElementById('grid');
+	var game = new Game;
+	game.init(gridHtml);
+	
+	document.addEventListener('click', function(e) {
+		var flag = false;
+		game.player.shoot(e.target.getAttribute('x'), e.target.getAttribute('y'), game.grid);
+		game.setCountShots();
+		countShots.innerHTML = 'Shots left:' + game.getCountShots();
+		
+		for (var i = 0; i < 3; i++) {
+			if(game.getShips()[i].isSunk(game.grid)) {
+				flag = true;
+				game.getShips().slice(i, 1);
+			}
+		}
+		if(flag ){
+			game.setCountShips();
+			countShips.innerHTML = 'Ships left:' + game.getCountShips();
+			flag = false;
+		}
+		
+	}, false)
+	
+	</script>
+</body>
+</html>
